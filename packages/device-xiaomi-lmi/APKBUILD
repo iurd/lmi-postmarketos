@@ -3,7 +3,7 @@
 pkgname=device-xiaomi-lmi
 pkgdesc="Xiaomi POCO F2 Pro"
 pkgver=1
-pkgrel=4
+pkgrel=5
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -89,6 +89,7 @@ depends="
 	nftables
 	font-noto-cjk
 	musl-locales
+	squeekboard
 	$_langs
 "
 makedepends="devicepkg-dev"

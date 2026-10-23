@@ -6,8 +6,8 @@ Expected with the current workaround: `boot` contains a pmOS image the bootloade
 
 ## No SSH
 
-- There is no `adbd`; use Wi-Fi + root SSH.
-- The lock screen cannot join an SSID, so Wi-Fi must be pre-seeded.
+- There is no `adbd`; use the UI or configure SSH yourself.
+- The lock screen cannot join an SSID. Log in first, then configure Wi-Fi in Settings. Generic images contain no Wi-Fi credentials.
 - Check nftables: `nft list ruleset`; TCP 22 must be accepted.
 - Keep a local console/TWRP path before changing firewall rules.
 

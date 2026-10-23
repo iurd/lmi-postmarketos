@@ -35,8 +35,8 @@ Do not flash `dtbo`, `vbmeta`, `super`, `persist` or `modem` unless you know why
 ## First boot
 
 - Phosh starts at the lock screen (the installer creates the user).
-- The lock screen cannot select a Wi-Fi SSID; Wi-Fi must be pre-seeded in the image.
-- Root SSH over Wi-Fi is the usable debug channel. There is no `adbd`.
+- The lock screen cannot select a Wi-Fi SSID. Log in with the default account, then configure Wi-Fi in Settings. Generic images ship **without Wi-Fi credentials**.
+- Root SSH is only available after you configure it. Generic images contain **no authorized keys**.
 - Verify display, touch, battery, Chinese and the top bar.
 
 ## Rollback

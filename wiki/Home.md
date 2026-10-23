@@ -17,6 +17,7 @@ Unofficial port notes for **postmarketOS + Phosh** on the Redmi K30 Pro / K30 Pr
 
 ## Navigate
 
+- [Device](Device) — postmarketOS-style device page and status
 - [Build](Build) — environment, package patches, build commands
 - [Flash](Flash) — backups, recovery-only boot, rollback
 - [Runtime](Runtime) — Chinese, corners, battery, nftables

@@ -9,6 +9,7 @@ Helper scripts used during the port. They are provided for reference; review pat
 | `add_kernel_hash.py` | Add the kernel tarball hash to the APKBUILD |
 | `pmbootstrap_lax_deps.py` | Local strict-mode workaround for pmbootstrap 3.12 |
 | `mount_image.sh` | Mount the sparse rootfs image in WSL (loop offset) |
+| `build-generic-image.sh` | Build an image with no Wi-Fi profile, no SSH keys and no personal files |
 | `add_sshd_server.sh` | Offline-install `openssh-server` into an image |
 | `collect_logs.sh` | Collect display/session/package logs from the device |
 | `inspect_bootimg.py` | Inspect an Android boot image header/DTB |

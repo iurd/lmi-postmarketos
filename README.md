@@ -54,7 +54,7 @@ Prerequisites: Linux (WSL2 is fine), `pmbootstrap` 3.12.x, the `yuweiyuan8/pmapo
 
 The packaged fix is in `packages/`:
 
-- `packages/device-xiaomi-lmi` — device package (`pkgrel=4`): CJK/language/nftables dependencies, panel JSON, `phoc.ini`, `locale.conf`, `.phoshdebug`, nftables drop-in.
+- `packages/device-xiaomi-lmi` — device package (`pkgrel=5`): CJK/language/nftables dependencies, panel JSON, `phoc.ini`, `locale.conf`, `.phoshdebug`, nftables drop-in.
 - `packages/linux-postmarketos-qcom-sm8250-lmi` — kernel package (`pkgrel=1`): the `qcom_fg` Kconfig/Makefile patch and `CONFIG_BATTERY_QCOM_FG=m`.
 
 Copy them into a pmaports checkout under `device/testing/`, then:
@@ -91,7 +91,7 @@ Rollback: flash your stock `boot.img` back; re-flash TWRP from your backup if ne
 
 ## Debugging
 
-- Root SSH over Wi-Fi is the working channel; the lock screen cannot select an SSID, so Wi-Fi must be pre-seeded in the image.
+- Root SSH over Wi-Fi is the working debug channel. The lock screen cannot select an SSID: log in with your account first, then configure Wi-Fi in Settings. Generic images ship **without Wi-Fi credentials and without authorized SSH keys**.
 - USB enumerates as `POSTMARKETOS` but there is no `adbd`; Alpine `android-tools` does not ship it.
 - Phoc has no `wlr-screencopy`, so `grim`/similar screenshot tools do not work. UI verification is visual.
 

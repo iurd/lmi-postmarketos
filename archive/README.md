@@ -8,6 +8,5 @@ Failed or superseded approaches, kept so they are not retried blindly.
 | `session-env` | Replaced by the upstream `$HOME/.phoshdebug` hook |
 | `patch_rootfs_adbd*.sh` | Alpine `android-tools` has no adbd; Wi-Fi SSH is the real debug channel |
 | `device-source_deviceinfo/` | `source_deviceinfo` is provided by `devicepkg-utils`; the patch was reverted |
-| `image-hacks/finalize-image-template.sh` | Old offline image customization template; contains placeholders only |
 
 These files are historical. Do not apply them to a current image without re-validating.

@@ -22,7 +22,7 @@
 | `font-noto-cjk`、`musl-locales`、65 个 `*-lang` 包 | 中文字体、locale 数据、翻译 | `apk del` 对应包 |
 | `/etc/nftables.d/60_lmi.nft` + `nftables` runlevel | DHCP 续租/mDNS 放行，防火墙开机启动 | `rc-update del nftables default`；`rc-service nftables stop`；删 drop-in |
 
-这些文件已经写入 pmaports：设备包 `device-xiaomi-lmi`（`pkgrel=4`）安装面板 JSON、`phoc.ini`、`locale.conf`、`.phoshdebug`、`60_lmi.nft` 和字体/语言依赖；内核包（`pkgrel=1`）带 `qcom_fg` 补丁和配置。当前设备上是等价的手工文件，下一次镜像构建会直接带上。
+这些文件已经写入 pmaports：设备包 `device-xiaomi-lmi`（`pkgrel=5`）安装面板 JSON、`phoc.ini`、`locale.conf`、`.phoshdebug`、`60_lmi.nft` 和字体/语言依赖；内核包（`pkgrel=1`）带 `qcom_fg` 补丁和配置。当前设备上是等价的手工文件，下一次镜像构建会直接带上。
 
 改语言/缩放/圆角后需要重新登录（重启 greetd 或注销）才生效。
 

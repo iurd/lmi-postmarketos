@@ -1,6 +1,7 @@
 # Sidebar
 
 - [Home](Home)
+- [Device](Device)
 - [Build](Build)
 - [Flash](Flash)
 - [Runtime](Runtime)
