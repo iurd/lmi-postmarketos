@@ -151,6 +151,7 @@ GENERIC_PASSWORD='147147' scripts/build-generic-image.sh
 - 镜像启动到 Phosh，用户先登录，再在设置里连接 Wi-Fi；不要预置 `.nmconnection`。
 - 不要写入 `authorized_keys`、个人家目录或调试用的 root 公钥。
 - 发布前检查镜像里没有 `NetworkManager/system-connections/*.nmconnection` 的个人配置、没有 `/root/.ssh` 私钥、没有个人文件。
+- 预构建的通用 `boot.img` 见 [v0.1.0-lmi release](https://github.com/iurd/lmi-postmarketos/releases/tag/v0.1.0-lmi)；它只包含 boot 镜像，rootfs 仍需按同样流程构建。
 
 ## 4. 构建命令
 

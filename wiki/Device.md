@@ -42,10 +42,13 @@ The current bring-up boots from **`recovery`** because the bootloader rejects th
 
 Generic images built from this repository:
 
+- prebuilt **boot.img**: [v0.1.0-lmi release](https://github.com/iurd/lmi-postmarketos/releases/tag/v0.1.0-lmi) (boot only; SHA256 `2d1f2a28…`)
 - contain **no Wi-Fi credentials**
 - contain **no authorized SSH keys**
 - boot to Phosh with user `user` / password `147147` (change it after first login)
 - log in first, then configure Wi-Fi in Settings
+
+The prebuilt boot image is paired with the generic rootfs from the same pmbootstrap run. If you build your own rootfs, generate both images with pmbootstrap; do not mix boot/rootfs from different builds.
 
 Use [`scripts/build-generic-image.sh`](https://github.com/iurd/lmi-postmarketos/blob/main/scripts/build-generic-image.sh) and review the image before publishing.
 

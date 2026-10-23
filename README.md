@@ -73,6 +73,7 @@ Generic image: `scripts/build-generic-image.sh` builds an image with no Wi-Fi pr
 
 - [Package build result](verification/build-2026-10-24.md) — hashes, `qcom_fg.ko` vermagic, device package contents
 - [Runtime checks](verification/runtime-2026-10-24.md) — Chinese UI, corners, battery, nftables on the device
+- [Generic boot image release](https://github.com/iurd/lmi-postmarketos/releases/tag/v0.1.0-lmi) — boot.img only, no Wi-Fi/keys; build the rootfs with pmbootstrap
 
 ## Flash (read this first)
 

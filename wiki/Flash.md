@@ -23,6 +23,8 @@ The full partition/backup details are in [`docs/03-device-audit.md`](https://git
 
 ## Flash
 
+Generic boot image: [v0.1.0-lmi release](https://github.com/iurd/lmi-postmarketos/releases/tag/v0.1.0-lmi) (boot.img only; build the rootfs with pmbootstrap and keep boot/rootfs from the same build).
+
 ```sh
 adb -s <serial> reboot bootloader
 fastboot -s <serial> flash userdata <rootfs-image>
