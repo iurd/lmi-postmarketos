@@ -13,6 +13,8 @@ scale = 3
 
 The tested setup uses 300% as the normal phone density (1080x2400 → 360x800 logical).
 
+The bring-up device's personal Wi-Fi profile and debug SSH keys were removed after verification. Generic builds contain no Wi-Fi credentials or authorized keys.
+
 ## Chinese UI
 
 - Packages: `font-noto-cjk`, `musl-locales`, and the `-lang` packages

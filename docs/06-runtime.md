@@ -2,6 +2,8 @@
 
 设备：Redmi K30 Pro Zoom（`lmi`），pmOS edge + Phosh 0.58，内核 `6.19.0-rc8-sm8250`，从 `recovery` 启动，root SSH over Wi-Fi。
 
+> 隐私说明：调试用个人 Wi-Fi 配置和 root SSH 密钥已在验证后从设备删除；本仓库和通用构建脚本不包含它们。
+
 ## 已验证
 
 - 中文界面：Phosh/GTK 及已安装应用显示中文；`locale -a` 含 `zh_CN`；`/usr/share/locale/zh_CN/LC_MESSAGES` 有 67 个 `.mo`。
