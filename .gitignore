@@ -1,0 +1,23 @@
+# Local/private artifacts
+out/
+backups/
+*.img
+*.apk
+*.ko
+*.upx
+*.zip
+*.tar.gz
+*.tar.xz
+*.log
+
+# Secrets
+.env
+*.key
+*.pem
+id_rsa*
+id_ed25519*
+authorized_keys
+
+# Editor/OS
+.DS_Store
+*~

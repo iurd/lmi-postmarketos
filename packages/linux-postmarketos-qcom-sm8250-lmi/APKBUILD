@@ -1,0 +1,67 @@
+# Maintainer: Nikroks <nikroks@mainlining.org>
+_flavor="postmarketos-qcom-sm8250-lmi"
+pkgname=linux-$_flavor
+pkgver=6.19.7
+pkgrel=1
+pkgdesc="Mainline kernel fork for SM8250"
+arch="aarch64"
+_carch="arm64"
+url="https://github.com/yuweiyuan8/linux/tree/v6.19"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps
+	pmb:cross-native
+	pmb:kconfigcheck-nftables
+"
+makedepends="
+	bash
+	bison
+	findutils
+	flex
+	openssl-dev
+	patch
+	perl
+	postmarketos-installkernel
+	python3
+"
+
+# Source
+_tag="lmi"
+_config="config-$_flavor.$arch"
+source="
+	$pkgname-$_tag.tar.gz::https://github.com/yuweiyuan8/linux/archive/v6.19/linux-$_tag.tar.gz
+	$_config
+	0001-power-supply-wire-qcom-fg.patch
+"
+builddir="$srcdir/Linux-redmi-k30pro-6.19-6.19"
+
+prepare() {
+	default_prepare
+	cp "$srcdir/config-$_flavor.$arch" .config
+}
+
+build() {
+	unset LDFLAGS
+	make ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-$_flavor"
+}
+
+package() {
+	mkdir -p "$pkgdir"/boot
+
+	make zinstall modules_install dtbs_install \
+		ARCH="$_carch" \
+		INSTALL_PATH="$pkgdir"/boot/ \
+		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_STRIP=1 \
+		INSTALL_DTBS_PATH="$pkgdir/boot/dtbs"
+	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+
+	install -D "$builddir"/include/config/kernel.release \
+		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+}
+
+sha512sums="
+231642abbf0baf4921341b4cad656a9b21ca12aea22234cf9f2a27b9d9b9d14ab7627f60427097a5b2e43cd6d07fd1931665d8e8c428beecb96855d32833a67a  linux-postmarketos-qcom-sm8250-lmi-lmi.tar.gz
+55262cc79fded7cb1e467e5af2801beba7415f3c890d94b18a941428642b449372d8e101da00966f549e3591b807ee6bf7ded482a833a3d6b229749620bc83e7  config-postmarketos-qcom-sm8250-lmi.aarch64
+d5e52a8e3cfb267f055542f7fec445a333d3f061d90c14a41aef86edd41cdeea72c669631f8224f7a66720d7e212744be57772855d135566a50af2e213d35a94  0001-power-supply-wire-qcom-fg.patch
+"

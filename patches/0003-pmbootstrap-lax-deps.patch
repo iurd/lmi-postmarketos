@@ -1,0 +1,13 @@
+diff --git a/pmb/chroot/apk.py b/pmb/chroot/apk.py
+index 17be4fd..cf09b91 100644
+--- a/pmb/chroot/apk.py
++++ b/pmb/chroot/apk.py
+@@ -224,7 +224,7 @@ def install(
+     to_add, to_del = packages_split_to_add_del(packages)
+ 
+     if build and context.config.build_pkgs_on_install:
+-        pmb.build.packages(context, to_add, arch)
++        pmb.build.packages(context, to_add, arch, strict=False)
+ 
+     to_add_local = packages_get_locally_built_apks(to_add, arch)
+ 

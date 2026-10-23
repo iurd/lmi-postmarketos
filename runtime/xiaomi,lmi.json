@@ -1,0 +1,7 @@
+{
+  "name": "Xiaomi Redmi K30 Pro Zoom",
+  "x-res": 1080,
+  "y-res": 2400,
+  "corner-radii": [150, 150, 150, 150],
+  "cutouts": []
+}

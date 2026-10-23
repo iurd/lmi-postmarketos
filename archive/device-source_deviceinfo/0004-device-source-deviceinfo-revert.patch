@@ -1,0 +1,13 @@
+diff --git a/device/testing/device-xiaomi-lmi/APKBUILD b/device/testing/device-xiaomi-lmi/APKBUILD
+index bedafa3..f81166f 100644
+--- a/device/testing/device-xiaomi-lmi/APKBUILD
++++ b/device/testing/device-xiaomi-lmi/APKBUILD
+@@ -3,7 +3,7 @@
+ pkgname=device-xiaomi-lmi
+ pkgdesc="Xiaomi POCO F2 Pro"
+ pkgver=1
+-pkgrel=0
++pkgrel=2
+ url="https://postmarketos.org"
+ license="MIT"
+ arch="aarch64"

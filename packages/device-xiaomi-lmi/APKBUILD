@@ -1,0 +1,183 @@
+# Reference: <https://postmarketos.org/devicepkg>
+# Maintainer: Nikroks <nikroksm@mail.ru>
+pkgname=device-xiaomi-lmi
+pkgdesc="Xiaomi POCO F2 Pro"
+pkgver=1
+pkgrel=4
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+_langs="
+	accountsservice-lang
+	appstream-lang
+	at-spi2-core-lang
+	avahi-lang
+	colord-gtk-lang
+	colord-lang
+	cups-pk-helper-lang
+	elogind-lang
+	evolution-data-server-lang
+	fwupd-lang
+	gcr-lang
+	gcr4-lang
+	gdk-pixbuf-lang
+	geoclue-lang
+	glib-lang
+	glib-networking-lang
+	gnome-bluetooth-lang
+	gnome-control-center-lang
+	gnome-keyring-lang
+	gnome-online-accounts-lang
+	gnome-session-lang
+	gnome-settings-daemon-lang
+	gnome-software-lang
+	gsettings-desktop-schemas-lang
+	gspell-lang
+	gst-plugins-bad-lang
+	gst-plugins-base-lang
+	gstreamer-lang
+	gtk+3.0-lang
+	gtk4.0-lang
+	gweather-locations-lang
+	ibus-lang
+	iso-codes-lang
+	json-glib-lang
+	libadwaita-lang
+	libbytesize-lang
+	libgtop-lang
+	libgweather4-lang
+	libhandy1-lang
+	libpwquality-lang
+	libsecret-lang
+	libsoup3-lang
+	malcontent-lang
+	modemmanager-lang
+	networkmanager-lang
+	newt-lang
+	phoc-lang
+	phosh-lang
+	pipewire-lang
+	plymouth-lang
+	pulseaudio-lang
+	shared-mime-info-lang
+	squeekboard-lang
+	udiskie-lang
+	udisks2-lang
+	upower-lang
+	vips-lang
+	webkit2gtk-6.0-lang
+	wireplumber-lang
+	xdg-desktop-portal-gtk-lang
+	xdg-desktop-portal-lang
+	xdg-desktop-portal-phosh-lang
+	xdg-user-dirs-gtk-lang
+	xdg-user-dirs-lang
+	xkeyboard-config-lang
+"
+depends="
+	alsa-ucm-conf
+	bootmac
+	hexagonrpcd
+	make-dynpart-mappings
+	mesa-vulkan-freedreno
+	mkbootimg
+	swclock-offset
+	linux-postmarketos-qcom-sm8250-lmi
+	postmarketos-base
+	qbootctl
+	nftables
+	font-noto-cjk
+	musl-locales
+	$_langs
+"
+makedepends="devicepkg-dev"
+source="
+	81-libssc-xiaomi-lmi.rules
+	alsa-ucm-conf/lmi.conf
+	alsa-ucm-conf/HiFi.conf
+	deviceinfo
+	hexagonrpcd.confd
+	modules-initfs
+	phoc.ini
+	locale.conf
+	phoshdebug
+	xiaomi,lmi.json
+	60_lmi.nft
+"
+subpackages="
+	$pkgname-nonfree-firmware:nonfree_firmware
+	$pkgname-nonfree-firmware-openrc:nonfree_firmware_openrc
+"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+
+	# device-specific alsa ucm conf
+	install -Dm644 "$srcdir/lmi.conf" \
+		"$pkgdir/usr/share/alsa/ucm2/Xiaomi/lmi/lmi.conf"
+
+	install -Dm644 "$srcdir/HiFi.conf" \
+		"$pkgdir/usr/share/alsa/ucm2/Xiaomi/lmi/HiFi.conf"
+
+	mkdir -p "$pkgdir/usr/share/alsa/ucm2/conf.d/sm8250"
+	ln -s ../../Xiaomi/lmi/lmi.conf \
+		"$pkgdir/usr/share/alsa/ucm2/conf.d/sm8250/xiaomi-lmi.conf"
+
+	# lmi runtime defaults: 300% scale, zh_CN, gmobile panel data
+	install -Dm644 "$srcdir/phoc.ini" "$pkgdir/etc/phosh/phoc.ini"
+	install -Dm644 "$srcdir/locale.conf" "$pkgdir/etc/locale.conf"
+	install -Dm644 "$srcdir/phoshdebug" "$pkgdir/etc/skel/.phoshdebug"
+	install -Dm644 "$srcdir/xiaomi,lmi.json" \
+		"$pkgdir/usr/share/gmobile-lmi/xiaomi,lmi.json"
+
+	# DHCP client replies + mDNS on top of pmOS base firewall
+	install -Dm644 "$srcdir/60_lmi.nft" "$pkgdir/etc/nftables.d/60_lmi.nft"
+}
+
+nonfree_firmware() {
+	pkgdesc="GPU, venus, modem and sensor firmware"
+	depends="
+		firmware-xiaomi-lmi
+		firmware-qcom-adreno-a650
+		linux-firmware-qcom
+		linux-firmware-qca
+		linux-firmware-ath11k
+		tqftpserv
+	"
+	mkdir "$subpkgdir"
+
+	install -Dm644 "$srcdir"/81-libssc-xiaomi-lmi.rules \
+		"$subpkgdir"/etc/udev/rules.d/81-libssc-xiaomi-lmi.rules
+
+	install -Dm644 "$srcdir"/hexagonrpcd.confd \
+		"$subpkgdir"/usr/share/hexagonrpcd/hexagonrpcd-sdsp.conf
+}
+
+nonfree_firmware_openrc() {
+	install_if="$pkgname-nonfree-firmware=$pkgver-r$pkgrel openrc"
+	install="$subpkgname.post-install $subpkgname.post-upgrade"
+	depends="
+		hexagonrpcd-openrc
+		tqftpserv-openrc
+	"
+	mkdir -p "$subpkgdir"
+}
+
+sha512sums="
+2c16ba75e0077b2b1eaefa4c73b287475505a1aeb291ec29316d41cc094277320f9d2aaabfd91eb1dc0f488ab2d61a94faef16e7afe0f1e226779113761b9a37  81-libssc-xiaomi-lmi.rules
+81930541fe99f87fdebe25eb9b6298ee3ce2ff6447fe373a1d8c7e743646c3443c013e2c307d0332813ea0262d0f857e368da59e870e9de05dac9e25c2b63bf4  lmi.conf
+b40ede2cc9f8696c9dc70f75281db8d29a5c639761912f1a0cdeb1b5837dea1c1512a563b5f678584f0234455748093a356165e2abea071476e86faa5da95e27  HiFi.conf
+86a482eece93e36ef4384efe6b9da504e31b7d198261a1ceaba401d7522e9218fc4833754723d36a04d06f9fdbeed90b90c81f86ac682bec1caaf00b6b35f309  deviceinfo
+d78810d741136928380481dcb9fc593ecdbb09cef48534f1e0cbbcc78e7f6ddbbaee4ec175e90dd43fb64cbb4d4a8cc18a74f42f0c589a785cf722e3bb21fa8d  hexagonrpcd.confd
+9e71742c34ddb01188d11910edf1fab3127bf976c7a5847777b9cf12c3e051974e41f8cc471a4b8bafab4e844ff1ea79e01fdfdcab02aca0fe1d060bc9bc894c  modules-initfs
+7c4f22ba042ea81f4ca0fbf107c110c616c45449c2485a841b7029c9f7b7b41a00a38f0b1fd41b5f7b877d1a9a13ecf1fbc0d45964e97b40caa980b3ce807772  phoc.ini
+5d8d5fa27219f81b3d5335c8746bc84e0e354c631589f263b7bd2baa9752ca462006bc3d38caea072f49344924ae13ad0f17b5d09f4644d15e9de87f8820fa46  locale.conf
+bf075dd47828ad8b58c1436caead900ce157bb409c57d69fb2463f8f4bbdd93df26ec78b907ad172e95ffa258bbddc367af24daab07cebe2ef0802a27b5a62c7  phoshdebug
+c2126dcad1bb1e2fed163678592bf155246c0e4314af35d08eeb5e177a468f21f739fb916b37310bda782f1746ad5f79ba12fa73f3b3f6e25cdc8329692fc0d1  xiaomi,lmi.json
+3a190a6dbfb88ad9c59d600b714f1cf8f560df5a0c5790c73fa534aece8a24bcd38aff6e6c0c23a2b3bea40f8212fffce7a6654c989aa8976dc665c7a472c298  60_lmi.nft
+"

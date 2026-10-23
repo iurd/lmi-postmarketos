@@ -1,0 +1,26 @@
+--- a/drivers/power/supply/Kconfig
++++ b/drivers/power/supply/Kconfig
+@@ -227,6 +227,13 @@
+ 	  to determine the battery state-of-charge (SOC) and supports other
+ 	  battery management features.
+ 
++config BATTERY_QCOM_FG
++	tristate "Qualcomm PMIC fuel gauge driver"
++	depends on MFD_SPMI_PMIC
++	help
++	  Say Y here to enable the Qualcomm PMIC fuel gauge driver
++	  found on PM8150B and similar PMICs.
++
+ config BATTERY_OLPC
+ 	tristate "One Laptop Per Child battery"
+ 	depends on OLPC_EC
+--- a/drivers/power/supply/Makefile
++++ b/drivers/power/supply/Makefile
+@@ -39,6 +39,7 @@
+ obj-$(CONFIG_BATTERY_PMU)	+= pmu_battery.o
+ obj-$(CONFIG_BATTERY_QCOM_BATTMGR)	+= qcom_battmgr.o
+ obj-$(CONFIG_BATTERY_QCOM_QG)	+= qcom_qg.o
++obj-$(CONFIG_BATTERY_QCOM_FG)	+= qcom_fg.o
+ obj-$(CONFIG_BATTERY_OLPC)	+= olpc_battery.o
+ obj-$(CONFIG_BATTERY_SAMSUNG_SDI)	+= samsung-sdi-battery.o
+ obj-$(CONFIG_BATTERY_COLLIE)	+= collie_battery.o

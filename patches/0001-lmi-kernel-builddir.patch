@@ -1,0 +1,13 @@
+diff --git a/device/testing/linux-postmarketos-qcom-sm8250-lmi/APKBUILD b/device/testing/linux-postmarketos-qcom-sm8250-lmi/APKBUILD
+index 84e927b..6b1b247 100644
+--- a/device/testing/linux-postmarketos-qcom-sm8250-lmi/APKBUILD
++++ b/device/testing/linux-postmarketos-qcom-sm8250-lmi/APKBUILD
+@@ -30,7 +30,7 @@ source="
+ 	$pkgname-$_tag.tar.gz::https://github.com/yuweiyuan8/linux/archive/v6.19/linux-$_tag.tar.gz
+ 	$_config
+ "
+-builddir="$srcdir/linux-v6.19"
++builddir="$srcdir/Linux-redmi-k30pro-6.19-6.19"
+ 
+ prepare() {
+ 	default_prepare
