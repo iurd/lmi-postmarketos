@@ -78,7 +78,7 @@ fastboot -s <serial> reboot recovery
 3. USB 枚举为 `VID_18D1&PID_D001` / `POSTMARKETOS`，但**没有 adbd**；USB 网络未验证。
 4. 早期调试镜像曾预置 root 公钥和 Wi-Fi；**通用镜像不包含任何 Wi-Fi 凭据、SSH 公钥或私钥**。需要 SSH 时请登录后自行配置。
 5. 锁屏不能选择 SSID；先登录（默认账户），再在设置里连接 Wi-Fi。通用构建不会自动连接任何网络。
-6. `--no-recommends` 漏掉了 `squeekboard` 和 `openssh-server`，已离线补装；否则 Phosh 会话起不来、SSH 也不存在。
+6. 早期 `--no-recommends` 镜像漏掉了 OSK/SSH，后来离线补装 `squeekboard` 和 `openssh-server`；通用镜像使用 Phosh 默认的 `stevia`，并且不默认启用 SSH。
 7. 2026-10-24 已补：中文界面、状态栏圆角补偿、PM8150B 电池读数，见 `06-runtime.md`。
 
 ## 5. 回退 Android

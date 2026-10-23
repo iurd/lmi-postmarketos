@@ -120,7 +120,7 @@ pmbootstrap --as-root build --arch aarch64 --lax firmware-xiaomi-lmi
 
 `../patches/0001-power-supply-wire-qcom-fg.patch` 把已有的 `drivers/power/supply/qcom_fg.c` 接入 Kconfig/Makefile；补丁已加入内核 APKBUILD 的 `source` 和 `sha512sums`，配置已加 `CONFIG_BATTERY_QCOM_FG=m`，`pkgrel` 升到 1。下次构建的内核包会自带 `qcom_fg.ko`；当前设备上的模块是手工安装的等价版本。详见 `06-runtime.md`。
 
-### 3.8 设备包运行期默认值（pkgrel=5）
+### 3.8 设备包运行期默认值（pkgrel=6）
 
 `device-xiaomi-lmi` 的 `depends` 已加入：
 
@@ -144,7 +144,8 @@ pmbootstrap --as-root build --arch aarch64 --lax firmware-xiaomi-lmi
 通用镜像不得包含个人 Wi-Fi、SSH 密钥或用户文件。使用 `scripts/build-generic-image.sh`：
 
 ```sh
-GENERIC_PASSWORD='<password>' scripts/build-generic-image.sh
+# Default password is 147147 for the standard test image; override if desired.
+GENERIC_PASSWORD='147147' scripts/build-generic-image.sh
 ```
 
 - 镜像启动到 Phosh，用户先登录，再在设置里连接 Wi-Fi；不要预置 `.nmconnection`。

@@ -11,7 +11,7 @@
 | Wi-Fi | QCA6391, ath11k |
 | Battery | PM8150B fuel gauge (`qcom_fg`) |
 | Charger | PM8150B SMB5 charger; status exposed, private fast-charge/BQ2597x not supported |
-| OSK | squeekboard |
+| OSK | stevia (Phosh 0.58 default); the bring-up image used squeekboard |
 | Desktop | Phosh 0.58 |
 
 ## Partial / unverified

@@ -22,7 +22,7 @@ The exact environment and failures are in [`docs/04-build.md`](https://github.co
 
 ### Device package
 
-`packages/device-xiaomi-lmi/` (`pkgrel=5`)
+`packages/device-xiaomi-lmi/` (`pkgrel=6`)
 
 Adds:
 
@@ -57,12 +57,20 @@ modinfo qcom_fg | grep vermagic
 
 `qcom_fg.ko` must match `uname -r` (`6.19.0-rc8-sm8250`).
 
+## Generic image
+
+```sh
+GENERIC_PASSWORD=147147 scripts/build-generic-image.sh
+```
+
+The script builds a fresh image with no Wi-Fi profile, no authorized SSH keys and no personal files. Default account: `user` / `147147`; change it after first login. The image does not auto-connect to any network.
+
 ## Verified build
 
 The 2026-10-24 build produced:
 
 - kernel `6.19.7-r1`, 28 MB, SHA256 `6a7bc96c…`
-- device `1-r5`, 5.1 KB, SHA256 `4b8ad22c…`
+- device `1-r6`, 5.1 KB, SHA256 `3de93abd…`
 - `qcom_fg.ko` vermagic `6.19.0-rc8-sm8250 SMP preempt mod_unload aarch64`
 
 Details and package contents: [`verification/build-2026-10-24.md`](https://github.com/iurd/lmi-postmarketos/blob/main/verification/build-2026-10-24.md).

@@ -2,7 +2,7 @@
 
 pmaports sources used for the lmi port.
 
-## device-xiaomi-lmi (`pkgrel=5`)
+## device-xiaomi-lmi (`pkgrel=6`)
 
 Copy this directory to `device/testing/device-xiaomi-lmi` in the pmaports fork.
 

@@ -28,7 +28,7 @@ export G_RESOURCE_OVERLAYS=/mobi/phosh/gmobile/devices/display-panels/xiaomi,lmi
 
 For an existing user, place the same file at `~/.phoshdebug` and log in again.
 
-There is no Chinese input method: squeekboard has no pinyin layout. The UI is translated, but typing Chinese needs a separate fcitx5/input-method integration.
+There is no Chinese input method: Phosh's OSK (stevia/squeekboard) has no pinyin layout. The UI is translated, but typing Chinese needs a separate fcitx5/input-method integration.
 
 ## Rounded corners
 

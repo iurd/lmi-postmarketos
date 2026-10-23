@@ -3,7 +3,7 @@
 # The image boots to Phosh; the user logs in and configures Wi-Fi in Settings.
 set -eu
 
-: "${GENERIC_PASSWORD:?set GENERIC_PASSWORD before running}"
+: "${GENERIC_PASSWORD:=147147}"
 : "${HOME:?set HOME}"
 PMB="${PMB:-$HOME/pmbootstrap}"
 

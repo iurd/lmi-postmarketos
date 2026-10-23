@@ -54,7 +54,7 @@ Prerequisites: Linux (WSL2 is fine), `pmbootstrap` 3.12.x, the `yuweiyuan8/pmapo
 
 The packaged fix is in `packages/`:
 
-- `packages/device-xiaomi-lmi` — device package (`pkgrel=5`): CJK/language/nftables dependencies, panel JSON, `phoc.ini`, `locale.conf`, `.phoshdebug`, nftables drop-in.
+- `packages/device-xiaomi-lmi` — device package (`pkgrel=6`): CJK/language/nftables dependencies, panel JSON, `phoc.ini`, `locale.conf`, `.phoshdebug`, nftables drop-in.
 - `packages/linux-postmarketos-qcom-sm8250-lmi` — kernel package (`pkgrel=1`): the `qcom_fg` Kconfig/Makefile patch and `CONFIG_BATTERY_QCOM_FG=m`.
 
 Copy them into a pmaports checkout under `device/testing/`, then:
@@ -66,6 +66,8 @@ python3 pmbootstrap.py --as-root build --arch aarch64 \
 ```
 
 The full kernel rebuild is the long step (~1 hour on 8 vCPU in WSL2). Build patches for the fork itself are in `patches/`.
+
+Generic image: `scripts/build-generic-image.sh` builds an image with no Wi-Fi profile, no SSH keys and no personal files. The default test account is `user` / `147147`; change it after first login. Generic images do not auto-connect to any Wi-Fi.
 
 ## Verification
 

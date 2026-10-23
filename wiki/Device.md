@@ -33,7 +33,7 @@ Not working: modem (SDX55m), camera stack, in-display fingerprint, GPS, haptics,
 This device is not in official pmaports; use the community fork and packages in this repository.
 
 - Kernel package: `linux-postmarketos-qcom-sm8250-lmi` (`pkgrel=1`)
-- Device package: `device-xiaomi-lmi` (`pkgrel=5`)
+- Device package: `device-xiaomi-lmi` (`pkgrel=6`)
 - Rootfs: build with `pmbootstrap` (or use a generic image built from these packages)
 
 The current bring-up boots from **`recovery`** because the bootloader rejects the pmOS image on `boot` (AVB). See [Flash](Flash) for the exact path and rollback.
@@ -44,7 +44,8 @@ Generic images built from this repository:
 
 - contain **no Wi-Fi credentials**
 - contain **no authorized SSH keys**
-- boot to Phosh; log in first, then configure Wi-Fi in Settings
+- boot to Phosh with user `user` / password `147147` (change it after first login)
+- log in first, then configure Wi-Fi in Settings
 
 Use [`scripts/build-generic-image.sh`](https://github.com/iurd/lmi-postmarketos/blob/main/scripts/build-generic-image.sh) and review the image before publishing.
 
@@ -57,7 +58,7 @@ See [Hardware](Hardware) for the support matrix and [Runtime](Runtime) for the d
 - Recovery-only boot due to AVB
 - No modem/calls/SMS/data
 - No full camera stack
-- No Chinese input method (squeekboard has no pinyin)
+- No Chinese input method (Phosh OSK stevia/squeekboard has no pinyin)
 - No screenshot path in Phoc (no wlr-screencopy)
 - Suspend/brightness unvalidated
 
