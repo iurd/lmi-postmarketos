@@ -54,7 +54,7 @@ Use [`scripts/build-generic-image.sh`](https://github.com/iurd/lmi-postmarketos/
 
 ## Hardware
 
-See [Hardware](Hardware) for the support matrix and [Runtime](Runtime) for the display scale, Chinese UI, battery and firewall details.
+See [Hardware](Hardware) for the support matrix, [`docs/07-support-matrix.md`](https://github.com/iurd/lmi-postmarketos/blob/main/docs/07-support-matrix.md) for the postmarketOS-style community-vs-port table, and [Runtime](Runtime) for the display scale, Chinese UI, battery and firewall details.
 
 ## Known issues
 

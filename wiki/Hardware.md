@@ -1,5 +1,7 @@
 # Hardware
 
+Full postmarketOS-style status table (community vs this port): [docs/07-support-matrix.md](https://github.com/iurd/lmi-postmarketos/blob/main/docs/07-support-matrix.md).
+
 ## Working
 
 | Component | Notes |

@@ -9,6 +9,7 @@
 | `04-build.md` | Build environment, patches and commands |
 | `05-flash-and-first-boot.md` | Backup, recovery-only flash path, first boot and rollback |
 | `06-runtime.md` | Chinese UI, corners, battery, nftables, cleanup and rollback |
+| `07-support-matrix.md` | postmarketOS-style status table: community vs this port, and what still does not work |
 
 The wiki under `../wiki/` is a guided version of these notes. The repository README has the short overview.
 
