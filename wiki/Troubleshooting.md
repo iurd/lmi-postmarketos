@@ -36,6 +36,18 @@ Expected with the current workaround: `boot` contains a pmOS image the bootloade
 - `upower -i /org/freedesktop/UPower/devices/battery_qcom_battery`.
 - Kernel package must include `CONFIG_BATTERY_QCOM_FG=m`.
 
+## Wi-Fi password field has no keyboard
+
+The lock screen cannot join an SSID, so log in first. In a Phosh session the OSK can be hidden even when a text field is focused:
+
+1. **Long-press the bottom home bar** (~0.5 s) to unfold the on-screen keyboard, then tap the password field.
+2. Check **Settings → Accessibility → Screen Keyboard** is enabled.
+3. If the OSK service crashed, **log out and back in** (the login screen uses the OSK too) to restart squeekboard/stevia.
+4. Make sure the Wi-Fi password dialog is actually open; tap the network name and wait for the dialog before tapping the entry.
+5. As a temporary workaround, a USB-C or Bluetooth keyboard may work if OTG/Bluetooth is available.
+
+Bring-up images use `squeekboard`; the generic images use Phosh's default `stevia`.
+
 ## Firewall locked me out
 
 Arm a flush before applying rules:
