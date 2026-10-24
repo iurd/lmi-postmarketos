@@ -24,9 +24,9 @@
 
 ## Status
 
-Working: display, touch, Phosh, Wi-Fi, GPU, battery (PM8150B FG), Chinese UI, rounded-corner compensation, nftables.
+Working: display, touch, Phosh, Wi-Fi, GPU, battery (PM8150B FG), Chinese UI, rounded-corner compensation, nftables, OSK.
 
-Not working: modem (SDX55m), camera stack, in-display fingerprint, GPS, haptics, NFC/sensors. Suspend and brightness behavior are not fully validated.
+Not working: audio (no usable PulseAudio sink/UCM routing in the current image), camera (OV13B10 probe fails), modem (SDX55m), in-display fingerprint, GPS, haptics, NFC, sensors/proximity. Suspend and brightness behavior are not fully validated. See the [support matrix](https://github.com/iurd/lmi-postmarketos/blob/main/docs/07-support-matrix.md).
 
 ## Installation
 

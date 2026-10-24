@@ -7,31 +7,37 @@ Full postmarketOS-style status table (community vs this port): [docs/07-support-
 | Component | Notes |
 |---|---|
 | SoC | Qualcomm SM8250 (Snapdragon 865) |
-| Display | Samsung AMS667UU01, 1080x2400, 60 Hz |
+| Display | Samsung AMS667UU01, 1080x2400, 60 Hz (brightness artifacts) |
 | Touch | FocalTech FT3518 (i2c13) |
 | GPU | Adreno 650, Freedreno/Mesa |
 | Wi-Fi | QCA6391, ath11k |
 | Battery | PM8150B fuel gauge (`qcom_fg`) |
-| Charger | PM8150B SMB5 charger; status exposed, private fast-charge/BQ2597x not supported |
-| OSK | stevia (Phosh 0.58 default); the bring-up image used squeekboard |
-| Desktop | Phosh 0.58 |
+| Charger | PM8150B SMB5 basic charging; private fast-charge/BQ2597x not supported |
+| Desktop / OSK | Phosh 0.58, `stevia` in generic images (`squeekboard` in the bring-up image) |
+| Thermal | Thermal zones report values |
 
-## Partial / unverified
+## Partial / present but not fully usable
 
-- Bluetooth (present, not re-verified in the latest pass)
-- Speaker / earpiece / microphone
-- Brightness changes (known artifacts)
-- Suspend / wake
-- USB gadget network (USB enumerates, no adbd; network path not verified)
+- Bluetooth: `hci0`, `btqca`, rfkill unblocked; pairing/audio not tested
+- IR: `rc0`/`/dev/lirc0` present; not tested
+- Camera flash: `white:flash` present; not tested
+- USB: Type-C `data_role=host`; `usb0` gadget network exists but is DOWN/untested
+- Suspend/wake: only `s2idle`; not tested
+- Video: Venus encoder/decoder nodes present; not tested
+- 77 Hz display: only 1080x2400 mode exposed in the current image
 
-## Not working
+## Not working (live audit 2026-10-24)
 
-- **Modem**: SDX55M is not supported by mainline; no SIM, calls, SMS, IMS/VoLTE, or mobile data
-- Camera: OV13B10 raw/UVC experiments only; no full camera stack
+- **Audio**: ALSA card 0 `lmi` exists, but PulseAudio exposes only `auto_null`; kernel reports missing UCM/mixer routing
+- **Camera**: `ov13b10` probe fails (`-5`); VFE nodes exist but no usable sensor
+- **Sensors**: `iio-sensor-proxy`/`libssc`/`hexagonrpcd` present, but no sensor data and `monitor-sensor` gets “Sensor claim not allowed”; proximity missing
+- **NFC**: no `/dev/nfc` or NFC sysfs
+- **GPS**: no `/dev/gnss`
+- **Haptics/vibration**: no vibrator/force-feedback device
+- **Modem**: SDX55M unsupported; no SIM/calls/SMS/data/IMS
 - In-display fingerprint
-- GPS
-- Haptics
-- NFC / sensors
+
+See [`docs/07-support-matrix.md`](https://github.com/iurd/lmi-postmarketos/blob/main/docs/07-support-matrix.md) and [`verification/live-audit-2026-10-24.md`](https://github.com/iurd/lmi-postmarketos/blob/main/verification/live-audit-2026-10-24.md).
 
 ## Boot
 
