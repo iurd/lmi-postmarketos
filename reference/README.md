@@ -15,4 +15,6 @@ Key out-of-tree sources copied from the kernel fork used by this port:
 
 These copies are for reference and reproducibility; the build uses the kernel tarball referenced by the kernel APKBUILD. If you update the fork, re-check the DTS and driver state instead of assuming these copies are current.
 
+`sm8250-xiaomi-lmi.dts` here already carries the port's sound-card rename (`&sound { model = "lmi"; }`, kernel package patch `0002`); the fork's original says `"Xiaomi lmi"`, which breaks UCM lookup.
+
 Not included: proprietary firmware, calibration/NV data, vendor blobs, BQ2597x fast-charge driver (not supported in this port).

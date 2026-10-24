@@ -3,6 +3,10 @@
 Read-only audit over SSH as the normal `user` account after Wi-Fi reconnection. No SSID, MAC,
 serial or password is recorded in this file.
 
+> This is a snapshot taken before the audio/UCM and fcitx5 work on the same day. Its audio and
+> Chinese-input findings are now stale; see
+> [`runtime-2026-10-24-audio-mic-ime.md`](runtime-2026-10-24-audio-mic-ime.md) for the current state.
+
 ## Working / present
 
 - Wi-Fi connected; NetworkManager reports `wlan0: connected`

@@ -2,3 +2,5 @@ export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:zh
 export LC_COLLATE=C
 export G_RESOURCE_OVERLAYS=/mobi/phosh/gmobile/devices/display-panels/xiaomi,lmi.json=/usr/share/gmobile-lmi/xiaomi,lmi.json
+unset GTK_IM_MODULE QT_IM_MODULE
+export XMODIFIERS=@im=fcitx

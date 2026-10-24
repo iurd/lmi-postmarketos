@@ -1187,7 +1187,7 @@ dai@113 {
 		compatible = "qcom,sm8250-sndcard";
 		pinctrl-0 = <&pri_mi2s_active>;
 		pinctrl-names = "default";
-		model = "Xiaomi lmi";
+		model = "lmi";
 
 	  audio-routing =
 	"AMIC1", "MIC BIAS1",

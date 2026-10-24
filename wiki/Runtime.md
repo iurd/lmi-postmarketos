@@ -1,6 +1,6 @@
 # Runtime
 
-The device package installs these files; the current device has equivalent manual copies.
+The device package installs these files; the current device runs `device-xiaomi-lmi-1-r12` directly.
 
 ## Display scale
 
@@ -26,11 +26,54 @@ export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:zh
 export LC_COLLATE=C
 export G_RESOURCE_OVERLAYS=/mobi/phosh/gmobile/devices/display-panels/xiaomi,lmi.json=/usr/share/gmobile-lmi/xiaomi,lmi.json
+unset GTK_IM_MODULE QT_IM_MODULE
+export XMODIFIERS=@im=fcitx
 ```
 
 For an existing user, place the same file at `~/.phoshdebug` and log in again.
 
-There is no Chinese input method: Phosh's OSK (stevia/squeekboard) has no pinyin layout. The UI is translated, but typing Chinese needs a separate fcitx5/input-method integration.
+## Chinese input (fcitx5)
+
+Chinese pinyin input uses fcitx5's native Wayland input method (`zwp_input_method_v2`), not IBus.
+
+- Packages: `fcitx5`, `fcitx5-chinese-addons`, `fcitx5-gtk`
+- `/etc/skel/.config/fcitx5/profile` sets `DefaultIM=pinyin` with a `keyboard-us` + `pinyin` group
+- `/usr/bin/fcitx5-session-start` runs `fcitx5 -d --replace`, then retries `fcitx5-remote -s pinyin` for up to 10 s
+- `/etc/xdg/autostart/fcitx5.desktop` (also copied to `/etc/phrog/autostart/`) starts it at login
+- `.phoshdebug` unsets `GTK_IM_MODULE`/`QT_IM_MODULE` and sets `XMODIFIERS=@im=fcitx`
+
+Verify from SSH; phoc runs under a private `dbus-run-session` bus, so take the address from the phoc process:
+
+```sh
+export XDG_RUNTIME_DIR=/run/user/10000 WAYLAND_DISPLAY=wayland-0
+export DBUS_SESSION_BUS_ADDRESS=$(tr '\0' '\n' < /proc/$(pgrep -x phoc | head -1)/environ \
+    | sed -n 's/^DBUS_SESSION_BUS_ADDRESS=//p')
+fcitx5-remote -n     # expect: pinyin
+```
+
+Order matters when changing the profile: stop fcitx5, write the profile, then start it. Writing while it runs gets overwritten with `keyboard-us`.
+
+Qt apps may still inherit `QT_IM_MODULE=ibus` from the distro session environment; GTK input works.
+
+## Audio
+
+ALSA card is `lmi` (DTS `sound.model = "lmi"`); the UCM lives in `/usr/share/alsa/ucm2/Xiaomi/lmi/` and is symlinked into `conf.d/sm8250`, `conf.d/snd-sm8250` and `conf.virt.d`.
+
+- Speaker: PulseAudio `HiFi` profile → `alsa_output.platform-sound.HiFi__Speaker__sink`
+- Mic: `alsa_input.platform-sound.HiFi__Mic1__source`; route `TX_CODEC_DMA_TX_3` → `TX SMIC MUX0=ADC0` → `ADC1`; gain `ADC1 Volume=12`
+- Raw control names matter: `ADC1_MIXER Switch`, `ADC1 Switch`, `ADC1 Volume`
+- `ADC1 Volume=20` clips; 12 is +18 dB
+
+Do not remove `/usr/share/wireplumber/wireplumber.conf.d/51-pulseaudio.conf`; without it WirePlumber takes the card and PulseAudio sinks stay suspended.
+
+After changing UCM or codec routing, reboot. Unbinding/rebinding the card leaves WCD938x ADC controls missing and keeps ADM errors (`q6adm ... 0x10325 error 0x2`). See [`verification/q6routing-reload-2026-10-24.md`](https://github.com/iurd/lmi-postmarketos/blob/main/verification/q6routing-reload-2026-10-24.md).
+
+```sh
+pactl list cards            # Active Profile: HiFi
+pactl list short sources    # Mic1 source
+parecord --device=alsa_input.platform-sound.HiFi__Mic1__source \
+    --format=s16le --rate=48000 --channels=2 --file-format=wav /tmp/mic.wav
+```
 
 ## Rounded corners
 
@@ -59,6 +102,15 @@ Verify:
 ```sh
 lsmod | grep qcom_fg
 upower -i /org/freedesktop/UPower/devices/battery_qcom_battery
+```
+
+## Screenshots
+
+`grim` works on the current Phoc despite older notes claiming there is no `wlr-screencopy`:
+
+```sh
+export XDG_RUNTIME_DIR=/run/user/10000 WAYLAND_DISPLAY=wayland-0
+grim /tmp/shot.png      # 1080x2400 PNG
 ```
 
 ## nftables

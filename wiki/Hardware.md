@@ -14,6 +14,9 @@ Full postmarketOS-style status table (community vs this port): [docs/07-support-
 | Battery | PM8150B fuel gauge (`qcom_fg`) |
 | Charger | PM8150B SMB5 basic charging; private fast-charge/BQ2597x not supported |
 | Desktop / OSK | Phosh 0.58, `stevia` in generic images (`squeekboard` in the bring-up image) |
+| Audio | PulseAudio `HiFi` profile on card `lmi`; TFA9872 speaker, WCD938x Mic1 capture; ADC1 gain 12 |
+| Chinese input | fcitx5 native Wayland + pinyin (GTK apps; Qt may still use IBus) |
+| Screenshots | `grim` works on the current Phoc |
 | Thermal | Thermal zones report values |
 
 ## Partial / present but not fully usable
@@ -28,7 +31,6 @@ Full postmarketOS-style status table (community vs this port): [docs/07-support-
 
 ## Not working (live audit 2026-10-24)
 
-- **Audio**: ALSA card 0 `lmi` exists, but PulseAudio exposes only `auto_null`; kernel reports missing UCM/mixer routing
 - **Camera**: `ov13b10` probe fails (`-5`); VFE nodes exist but no usable sensor
 - **Sensors**: `iio-sensor-proxy`/`libssc`/`hexagonrpcd` present, but no sensor data and `monitor-sensor` gets “Sensor claim not allowed”; proximity missing
 - **NFC**: no `/dev/nfc` or NFC sysfs

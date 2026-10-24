@@ -14,23 +14,26 @@ The exact environment and failures are in [`docs/04-build.md`](https://github.co
 
 ### Kernel package
 
-`packages/linux-postmarketos-qcom-sm8250-lmi/` (`pkgrel=1`)
+`packages/linux-postmarketos-qcom-sm8250-lmi/` (`pkgrel=3`)
 
 - `0001-power-supply-wire-qcom-fg.patch` wires the existing `drivers/power/supply/qcom_fg.c` into Kconfig/Makefile.
+- `0002-arm64-dts-qcom-sm8250-lmi-rename-sound-card.patch` renames `sound.model` from `Xiaomi lmi` to `lmi` so UCM lookup works.
 - `CONFIG_BATTERY_QCOM_FG=m` is added to the kernel config, so the package ships `qcom_fg.ko`.
 - The running kernel has `CONFIG_MODVERSIONS` disabled, but a package rebuild is still preferable to manually copying a module.
 
 ### Device package
 
-`packages/device-xiaomi-lmi/` (`pkgrel=6`)
+`packages/device-xiaomi-lmi/` (`pkgrel=12`)
 
 Adds:
 
 - `font-noto-cjk`, `musl-locales`, and the `-lang` packages used by the installed UI
 - `nftables`
+- `fcitx5`, `fcitx5-chinese-addons`, `fcitx5-gtk`
 - panel data `xiaomi,lmi.json`, `phoc.ini` (scale 3), `locale.conf`
-- `/etc/skel/.phoshdebug` (session language + gmobile resource overlay)
+- `/etc/skel/.phoshdebug` (session language, gmobile resource overlay, IM env)
 - `/etc/nftables.d/60_lmi.nft` (DHCP client replies + mDNS)
+- ALSA UCM for speaker/Mic1 plus the fcitx5 autostart/profile files
 
 ## Build steps
 
@@ -60,10 +63,10 @@ modinfo qcom_fg | grep vermagic
 ## Generic image
 
 ```sh
-GENERIC_PASSWORD=147147 scripts/build-generic-image.sh
+GENERIC_PASSWORD='<password>' scripts/build-generic-image.sh
 ```
 
-The script builds a fresh image with no Wi-Fi profile, no authorized SSH keys and no personal files. Default account: `user` / `147147`; change it after first login. The image does not auto-connect to any network.
+The script builds a fresh image with no Wi-Fi profile, no authorized SSH keys and no personal files. The account is `user`; set its password with `GENERIC_PASSWORD` and change it after first login. The image does not auto-connect to any network.
 
 ## Verified build
 

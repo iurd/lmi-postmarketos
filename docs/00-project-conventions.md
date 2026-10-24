@@ -33,8 +33,9 @@
 
 - pmOS edge + Phosh boots from `recovery`; display/touch/Wi-Fi/GPU/battery work
 - Chinese UI, corner compensation and nftables are working; runtime verified
-- Package-level fixes: kernel `pkgrel=1`, device `pkgrel=6`
-- Remaining: AVB-accepted boot image, cold-boot validation, suspend/brightness, Chinese input method, screenshot automation
+- Speaker/mic (UCM + ADC1 gain 12), fcitx5 pinyin input and `grim` screenshots verified
+- Package-level fixes: kernel `pkgrel=3`, device `pkgrel=12`
+- Remaining: AVB-accepted boot image, cold-boot validation, suspend/brightness, Qt IM env, sensors/camera/modem
 
 ## Documentation
 

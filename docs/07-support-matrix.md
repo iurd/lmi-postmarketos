@@ -21,7 +21,7 @@ read-only live audit from 2026-10-24 (device online via Wi-Fi; no SSID/MAC/seria
 | Screen | Works | 🟡 | AMS667UU01 1080x2400; `modes` exposes 1080x2400 only; 60 Hz; brightness-change artifacts |
 | Touch | Works | ✅ | FocalTech FT3518 |
 | 3D / GPU | Works | ✅ | Adreno 650, Freedreno/Mesa |
-| Audio | Works | ❌ | ALSA card 0 `lmi` exists (TFA9872/WCD938x bound), but PulseAudio exposes only `auto_null`; kernel logs “no backend DAIs enabled … missing ALSA mixer routing or UCM profile” |
+| Audio | Works | ✅ | PulseAudio `HiFi` profile on card 0 `lmi`; TFA9872 speaker and WCD938x Mic1 source; UCM routes under `conf.d/sm8250`/`conf.d/snd-sm8250`; ADC1 gain 12 (+18 dB). Details: `verification/runtime-2026-10-24-audio-mic-ime.md` |
 | Camera | Partial | ❌ | `ov13b10` probe fails with `-5`; VFE/venus nodes exist but no usable camera sensor |
 | Camera flash | Works | 🟡 | `white:flash` LED exists; not tested |
 | IR | Works | 🟡 | `rc0` / `/dev/lirc0` exist; not tested |
@@ -40,8 +40,8 @@ read-only live audit from 2026-10-24 (device online via Wi-Fi; no SSID/MAC/seria
 | Video | — | 🟡 | Venus encoder/decoder nodes (`video14`/`video15`) exist; not tested |
 | Desktop / UI | — | ✅ | Phosh 0.58, Chinese UI, rounded-corner compensation |
 | OSK | — | ✅ | `squeekboard` running, `screen-keyboard-enabled=true`; the long delay was the Wi-Fi dialog startup |
-| Chinese input | — | ❌ | No pinyin OSK (squeekboard/stevia) |
-| Screenshots | — | ❌ | Phoc has no `wlr-screencopy` |
+| Chinese input | — | ✅ | fcitx5 native Wayland (`zwp_input_method_v2`) + pinyin; autostart via `/etc/xdg/autostart/fcitx5.desktop`; `fcitx5-remote -n` = `pinyin`. Qt IM env residual noted in `HANDOFF.md` |
+| Screenshots | — | ✅ | `grim` works on the current Phoc |
 | Firewall (nftables) | — | ✅ / ❓ | Runtime verified; cold boot with nftables pending |
 | Thermal | — | ✅ | Thermal zones report values |
 | Hotspot / tethering | — | ❓ | nftables rules exist; not verified |
@@ -50,7 +50,6 @@ read-only live audit from 2026-10-24 (device online via Wi-Fi; no SSID/MAC/seria
 
 ## Still not working (live-confirmed or hard blocker)
 
-- Audio: no usable PulseAudio sink/source; ALSA card exists but UCM routing is missing
 - Camera: OV13B10 probe failure; raw nodes alone are not a camera
 - NFC, GPS: no device nodes in this port
 - Sensors: proxy/libssc present but no sensor data; proximity missing
@@ -58,7 +57,6 @@ read-only live audit from 2026-10-24 (device online via Wi-Fi; no SSID/MAC/seria
 - Modem: calls/SMS/data/IMS (mainline SDX55m blocker)
 - Boot from `boot` (AVB); recovery-only
 - 33W private fast charging (BQ2597x)
-- Chinese text input; screenshots
 - Battery health/cycle count
 
 ## Present but not fully tested
@@ -69,4 +67,5 @@ Venus video encode/decode, suspend/wake, hotspot/tethering, 77 Hz display, therm
 ## Current verified positives
 
 Wi-Fi (connected), Phosh, display/touch, GPU, battery/fuel gauge, Chinese UI, corner compensation,
-OSK service, nftables runtime.
+OSK service, nftables runtime, speaker playback, Mic1 capture (no clipping at ADC1=12),
+fcitx5 pinyin, `grim` screenshots.

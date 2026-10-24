@@ -18,6 +18,9 @@ deviceinfo_external_storage="false"
 deviceinfo_screen_width="1080"
 deviceinfo_screen_height="2400"
 
+# Kernel only provides lzo/lzo-rle zram backends
+deviceinfo_zram_swap_algo="lzo-rle"
+
 # Kernel options
 deviceinfo_dtb="qcom/sm8250-xiaomi-lmi"
 deviceinfo_append_dtb="true"

@@ -3,7 +3,7 @@
 pkgname=device-xiaomi-lmi
 pkgdesc="Xiaomi POCO F2 Pro"
 pkgver=1
-pkgrel=6
+pkgrel=12
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -89,6 +89,9 @@ depends="
 	nftables
 	font-noto-cjk
 	musl-locales
+	fcitx5
+	fcitx5-chinese-addons
+	fcitx5-gtk
 	$_langs
 "
 makedepends="devicepkg-dev"
@@ -104,6 +107,9 @@ source="
 	phoshdebug
 	xiaomi,lmi.json
 	60_lmi.nft
+	fcitx5-session-start
+	fcitx5.desktop
+	fcitx5-profile
 "
 subpackages="
 	$pkgname-nonfree-firmware:nonfree_firmware
@@ -124,9 +130,22 @@ package() {
 	install -Dm644 "$srcdir/HiFi.conf" \
 		"$pkgdir/usr/share/alsa/ucm2/Xiaomi/lmi/HiFi.conf"
 
-	mkdir -p "$pkgdir/usr/share/alsa/ucm2/conf.d/sm8250"
-	ln -s ../../Xiaomi/lmi/lmi.conf \
-		"$pkgdir/usr/share/alsa/ucm2/conf.d/sm8250/xiaomi-lmi.conf"
+	# ALSA looks the card up either by index (conf.d/<driver>/) or by
+	# name (conf.virt.d/). The ASoC driver is "sm8250" for the UCM
+	# lookup and the card is named "lmi" in the DTS.
+	mkdir -p "$pkgdir/usr/share/alsa/ucm2/conf.d/sm8250" \
+		"$pkgdir/usr/share/alsa/ucm2/conf.d/snd-sm8250" \
+		"$pkgdir/usr/share/alsa/ucm2/conf.virt.d"
+	for _d in sm8250 snd-sm8250; do
+		for _f in lmi Xiaomi-lmi sm8250 snd-sm8250; do
+			ln -s ../../Xiaomi/lmi/lmi.conf \
+				"$pkgdir/usr/share/alsa/ucm2/conf.d/$_d/$_f.conf"
+		done
+	done
+	for _f in lmi Xiaomi-lmi; do
+		ln -s ../Xiaomi/lmi/lmi.conf \
+			"$pkgdir/usr/share/alsa/ucm2/conf.virt.d/$_f.conf"
+	done
 
 	# lmi runtime defaults: 300% scale, zh_CN, gmobile panel data
 	install -Dm644 "$srcdir/phoc.ini" "$pkgdir/etc/phosh/phoc.ini"
@@ -137,6 +156,16 @@ package() {
 
 	# DHCP client replies + mDNS on top of pmOS base firewall
 	install -Dm644 "$srcdir/60_lmi.nft" "$pkgdir/etc/nftables.d/60_lmi.nft"
+
+	# fcitx5 native Wayland Chinese input
+	install -Dm755 "$srcdir/fcitx5-session-start" \
+		"$pkgdir/usr/bin/fcitx5-session-start"
+	install -Dm644 "$srcdir/fcitx5.desktop" \
+		"$pkgdir/etc/phrog/autostart/fcitx5.desktop"
+	install -Dm644 "$srcdir/fcitx5.desktop" \
+		"$pkgdir/etc/xdg/autostart/fcitx5.desktop"
+	install -Dm644 "$srcdir/fcitx5-profile" \
+		"$pkgdir/etc/skel/.config/fcitx5/profile"
 }
 
 nonfree_firmware() {
@@ -171,13 +200,16 @@ nonfree_firmware_openrc() {
 sha512sums="
 2c16ba75e0077b2b1eaefa4c73b287475505a1aeb291ec29316d41cc094277320f9d2aaabfd91eb1dc0f488ab2d61a94faef16e7afe0f1e226779113761b9a37  81-libssc-xiaomi-lmi.rules
 81930541fe99f87fdebe25eb9b6298ee3ce2ff6447fe373a1d8c7e743646c3443c013e2c307d0332813ea0262d0f857e368da59e870e9de05dac9e25c2b63bf4  lmi.conf
-b40ede2cc9f8696c9dc70f75281db8d29a5c639761912f1a0cdeb1b5837dea1c1512a563b5f678584f0234455748093a356165e2abea071476e86faa5da95e27  HiFi.conf
-86a482eece93e36ef4384efe6b9da504e31b7d198261a1ceaba401d7522e9218fc4833754723d36a04d06f9fdbeed90b90c81f86ac682bec1caaf00b6b35f309  deviceinfo
+269982346635d4ec84316d9abe287503e26cb70e12ff81afbd1da34b8bb4551d25c4d0e5be53d033e30e35388b0d77b253678c77d8cee8620a47c379926dda80  HiFi.conf
+658fe015c094fe0a00ab1db4592ce0dfb91151c421536e5ddd2cb7951389ac1eac6211a3b6f5fe6a177d5a77803a80a4ae8fac137e5353c23e517337252f3ab4  deviceinfo
 d78810d741136928380481dcb9fc593ecdbb09cef48534f1e0cbbcc78e7f6ddbbaee4ec175e90dd43fb64cbb4d4a8cc18a74f42f0c589a785cf722e3bb21fa8d  hexagonrpcd.confd
 9e71742c34ddb01188d11910edf1fab3127bf976c7a5847777b9cf12c3e051974e41f8cc471a4b8bafab4e844ff1ea79e01fdfdcab02aca0fe1d060bc9bc894c  modules-initfs
 7c4f22ba042ea81f4ca0fbf107c110c616c45449c2485a841b7029c9f7b7b41a00a38f0b1fd41b5f7b877d1a9a13ecf1fbc0d45964e97b40caa980b3ce807772  phoc.ini
 5d8d5fa27219f81b3d5335c8746bc84e0e354c631589f263b7bd2baa9752ca462006bc3d38caea072f49344924ae13ad0f17b5d09f4644d15e9de87f8820fa46  locale.conf
-bf075dd47828ad8b58c1436caead900ce157bb409c57d69fb2463f8f4bbdd93df26ec78b907ad172e95ffa258bbddc367af24daab07cebe2ef0802a27b5a62c7  phoshdebug
+bbc57fee2b8fd8f7ac8961ddf294d3cad063de044793f8d2c09522d945369ebf7b7cf6aad2f0d52f2ad60ceea4d69581d3e239bbf81c430ce1c930cf671edfaa  phoshdebug
 c2126dcad1bb1e2fed163678592bf155246c0e4314af35d08eeb5e177a468f21f739fb916b37310bda782f1746ad5f79ba12fa73f3b3f6e25cdc8329692fc0d1  xiaomi,lmi.json
 3a190a6dbfb88ad9c59d600b714f1cf8f560df5a0c5790c73fa534aece8a24bcd38aff6e6c0c23a2b3bea40f8212fffce7a6654c989aa8976dc665c7a472c298  60_lmi.nft
+127674faf4e1270997e5a2f0ea6df1fa3b7ef33090aa23319c88a7b90d1b1fb4251f49096cb789e01529dd052a6f6ca45dfa032913d5782433bde89248132f30  fcitx5-session-start
+5d90a3bebc7210ac4c0a4fac6fa7070d215ed15a280127baa0db25f11f1c14be55bf20ce7b809d23929e0e3fc9617f43bb7133097ff02621d3a2533219b1dfa5  fcitx5.desktop
+4ff07a30bfda2fea6d70a49bd7dc8926ffb253057b00d184402ea35c5ee6aa7794032348a1aa17d99d9ace3d34862414a0c4a0dcf2d5ccb55ec19b93a4eb5465  fcitx5-profile
 "

@@ -1,0 +1,15 @@
+--- a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-lmi.dts
++++ b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-lmi.dts
+@@ -1187,7 +1187,11 @@
+ 		compatible = "qcom,sm8250-sndcard";
+ 		pinctrl-0 = <&pri_mi2s_active>;
+ 		pinctrl-names = "default";
+-		model = "Xiaomi lmi";
++		/* Use the codename: PulseAudio/ALSA pass this verbatim to
++		 * snd_use_case_mgr_open(). Names with spaces or hyphens are
++		 * not resolvable as a card identifier.
++		 */
++		model = "lmi";
+ 
+ 	  audio-routing =
+ 	"AMIC1", "MIC BIAS1",

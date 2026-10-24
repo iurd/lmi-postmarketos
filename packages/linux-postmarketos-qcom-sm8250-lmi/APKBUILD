@@ -2,7 +2,7 @@
 _flavor="postmarketos-qcom-sm8250-lmi"
 pkgname=linux-$_flavor
 pkgver=6.19.7
-pkgrel=1
+pkgrel=3
 pkgdesc="Mainline kernel fork for SM8250"
 arch="aarch64"
 _carch="arm64"
@@ -31,6 +31,7 @@ source="
 	$pkgname-$_tag.tar.gz::https://github.com/yuweiyuan8/linux/archive/v6.19/linux-$_tag.tar.gz
 	$_config
 	0001-power-supply-wire-qcom-fg.patch
+	0002-arm64-dts-qcom-sm8250-lmi-rename-sound-card.patch
 "
 builddir="$srcdir/Linux-redmi-k30pro-6.19-6.19"
 
@@ -64,4 +65,5 @@ sha512sums="
 231642abbf0baf4921341b4cad656a9b21ca12aea22234cf9f2a27b9d9b9d14ab7627f60427097a5b2e43cd6d07fd1931665d8e8c428beecb96855d32833a67a  linux-postmarketos-qcom-sm8250-lmi-lmi.tar.gz
 55262cc79fded7cb1e467e5af2801beba7415f3c890d94b18a941428642b449372d8e101da00966f549e3591b807ee6bf7ded482a833a3d6b229749620bc83e7  config-postmarketos-qcom-sm8250-lmi.aarch64
 d5e52a8e3cfb267f055542f7fec445a333d3f061d90c14a41aef86edd41cdeea72c669631f8224f7a66720d7e212744be57772855d135566a50af2e213d35a94  0001-power-supply-wire-qcom-fg.patch
+d846f7a887a15893c7bb9d516968340da59629897167a74521c9bf261b7d64a5d211f12c06c449b80549c89035b70f814c211fe6e371180d07535132eef6affd  0002-arm64-dts-qcom-sm8250-lmi-rename-sound-card.patch
 "

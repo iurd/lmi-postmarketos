@@ -24,16 +24,16 @@
 
 ## Status
 
-Working: display, touch, Phosh, Wi-Fi, GPU, battery (PM8150B FG), Chinese UI, rounded-corner compensation, nftables, OSK.
+Working: display, touch, Phosh, Wi-Fi, GPU, battery (PM8150B FG), speaker playback, microphone capture, Chinese UI, Chinese pinyin input (fcitx5), rounded-corner compensation, nftables, OSK, `grim` screenshots.
 
-Not working: audio (no usable PulseAudio sink/UCM routing in the current image), camera (OV13B10 probe fails), modem (SDX55m), in-display fingerprint, GPS, haptics, NFC, sensors/proximity. Suspend and brightness behavior are not fully validated. See the [support matrix](https://github.com/iurd/lmi-postmarketos/blob/main/docs/07-support-matrix.md).
+Not working: camera (OV13B10 probe fails), modem (SDX55m), in-display fingerprint, GPS, haptics, NFC, sensors/proximity. Suspend and brightness behavior are not fully validated. See the [support matrix](https://github.com/iurd/lmi-postmarketos/blob/main/docs/07-support-matrix.md).
 
 ## Installation
 
 This device is not in official pmaports; use the community fork and packages in this repository.
 
-- Kernel package: `linux-postmarketos-qcom-sm8250-lmi` (`pkgrel=1`)
-- Device package: `device-xiaomi-lmi` (`pkgrel=6`)
+- Kernel package: `linux-postmarketos-qcom-sm8250-lmi` (`pkgrel=3`)
+- Device package: `device-xiaomi-lmi` (`pkgrel=12`)
 - Rootfs: build with `pmbootstrap` (or use a generic image built from these packages)
 
 The current bring-up boots from **`recovery`** because the bootloader rejects the pmOS image on `boot` (AVB). See [Flash](Flash) for the exact path and rollback.
@@ -45,7 +45,7 @@ Generic images built from this repository:
 - prebuilt **boot.img**: [v0.1.0-lmi release](https://github.com/iurd/lmi-postmarketos/releases/tag/v0.1.0-lmi) (boot only; SHA256 `2d1f2a28…`)
 - contain **no Wi-Fi credentials**
 - contain **no authorized SSH keys**
-- boot to Phosh with user `user` / password `147147` (change it after first login)
+- boot to Phosh with user `user` and a password you pass via `GENERIC_PASSWORD` (change it after first login)
 - log in first, then configure Wi-Fi in Settings
 
 The prebuilt boot image is paired with the generic rootfs from the same pmbootstrap run. If you build your own rootfs, generate both images with pmbootstrap; do not mix boot/rootfs from different builds.
@@ -61,8 +61,7 @@ See [Hardware](Hardware) for the support matrix, [`docs/07-support-matrix.md`](h
 - Recovery-only boot due to AVB
 - No modem/calls/SMS/data
 - No full camera stack
-- No Chinese input method (Phosh OSK stevia/squeekboard has no pinyin)
-- No screenshot path in Phoc (no wlr-screencopy)
+- Qt apps may still inherit `QT_IM_MODULE=ibus` even though GTK input works through fcitx5
 - Suspend/brightness unvalidated
 
 ## See also

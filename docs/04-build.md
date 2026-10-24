@@ -118,14 +118,15 @@ pmbootstrap --as-root build --arch aarch64 --lax firmware-xiaomi-lmi
 
 ### 3.7 电量计 qcom_fg（已进内核包）
 
-`../patches/0001-power-supply-wire-qcom-fg.patch` 把已有的 `drivers/power/supply/qcom_fg.c` 接入 Kconfig/Makefile；补丁已加入内核 APKBUILD 的 `source` 和 `sha512sums`，配置已加 `CONFIG_BATTERY_QCOM_FG=m`，`pkgrel` 升到 1。下次构建的内核包会自带 `qcom_fg.ko`；当前设备上的模块是手工安装的等价版本。详见 `06-runtime.md`。
+`../patches/0001-power-supply-wire-qcom-fg.patch` 把已有的 `drivers/power/supply/qcom_fg.c` 接入 Kconfig/Makefile；补丁已加入内核 APKBUILD 的 `source` 和 `sha512sums`，配置已加 `CONFIG_BATTERY_QCOM_FG=m`。内核包现在是 `pkgrel=3`，同时带 `packages/linux-postmarketos-qcom-sm8250-lmi/0002-arm64-dts-qcom-sm8250-lmi-rename-sound-card.patch`，把 `&sound { model = "Xiaomi lmi"; }` 改成 `"lmi"`，否则 PulseAudio/ALSA 找不到 UCM。详见 `06-runtime.md`。
 
-### 3.8 设备包运行期默认值（pkgrel=6）
+### 3.8 设备包运行期默认值（pkgrel=12）
 
 `device-xiaomi-lmi` 的 `depends` 已加入：
 
 - `font-noto-cjk`、`musl-locales`、65 个 `*-lang` 翻译包
 - `nftables`（pmOS base 的 `postmarketos-base-nftables-openrc` 负责把它加入 `default` runlevel）
+- `fcitx5`、`fcitx5-chinese-addons`、`fcitx5-gtk`（中文拼音输入）
 
 设备包同时安装：
 
@@ -134,18 +135,22 @@ pmbootstrap --as-root build --arch aarch64 --lax firmware-xiaomi-lmi
 | `/usr/share/gmobile-lmi/xiaomi,lmi.json` | gmobile 的 lmi 面板数据（圆角 150，配合 300% 缩放） |
 | `/etc/phosh/phoc.ini` | 内屏 `scale = 3` |
 | `/etc/locale.conf` | `LANG=zh_CN.UTF-8` |
-| `/etc/skel/.phoshdebug` | 会话级 `LANG`/`LANGUAGE`/`G_RESOURCE_OVERLAYS`（phosh-session 自带 hook） |
+| `/etc/skel/.phoshdebug` | 会话级 `LANG`/`LANGUAGE`/`G_RESOURCE_OVERLAYS`，并清除 `GTK_IM_MODULE`/`QT_IM_MODULE`、设 `XMODIFIERS` |
 | `/etc/nftables.d/60_lmi.nft` | 放行 DHCP 客户端续租和 mDNS，配合 pmOS 默认防火墙 |
+| `/usr/share/alsa/ucm2/Xiaomi/lmi/{lmi,HiFi}.conf` + `conf.d/*`、`conf.virt.d/*` 软链 | 扬声器和 Mic1 的 UCM 路由（`cdev "hw:0"`，ADC1 增益 12） |
+| `/usr/bin/fcitx5-session-start`、`/etc/xdg/autostart/fcitx5.desktop`、`/etc/skel/.config/fcitx5/profile` | 登录后启动 fcitx5 并切到 pinyin |
 
-这些文件对**下一次镜像构建**生效；当前设备上已有等价的手工文件。重刷旧镜像不会带上它们。
+另外 `deviceinfo` 里加了 `deviceinfo_zram_swap_algo="lzo-rle"`（内核只有 LZO zram 后端）。
+
+这些文件对**下一次镜像构建**生效；当前设备安装的是 r12。
 
 ### 3.9 通用镜像构建
 
 通用镜像不得包含个人 Wi-Fi、SSH 密钥或用户文件。使用 `scripts/build-generic-image.sh`：
 
 ```sh
-# Default password is 147147 for the standard test image; override if desired.
-GENERIC_PASSWORD='147147' scripts/build-generic-image.sh
+# 默认密码由脚本要求显式提供；不要把自己用的密码写进仓库
+GENERIC_PASSWORD='<password>' scripts/build-generic-image.sh
 ```
 
 - 镜像启动到 Phosh，用户先登录，再在设置里连接 Wi-Fi；不要预置 `.nmconnection`。
